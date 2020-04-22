@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import ElementWrapper from "./ElementWrapper";
-import decorate, {changeSetting, setChildren} from "../decorators/element-component";
 
 class RootComponent extends Component {
   constructor(props){
@@ -10,7 +9,6 @@ class RootComponent extends Component {
       settings: props.element.getSettings()
     };
     props.element.component = this;
-    decorate(this);
   }
 
   render(){
