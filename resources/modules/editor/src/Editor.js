@@ -27,8 +27,8 @@ class Editor extends Component {
     super(props);
     window.altrpEditor = this;
     this.state = {
-      activePanel: 'widgets',
-      // activePanel: 'settings',
+      // activePanel: 'widgets',
+      activePanel: 'settings',
       templateStatus: CONSTANTS.TEMPLATE_UPDATED,
     };
     this.openPageSettings = this.openPageSettings.bind(this);
@@ -63,6 +63,7 @@ class Editor extends Component {
   onDragEnd(){
     let draggableElement = store.getState().elementDrag.element;
     if(draggableElement && draggableElement.stopDrag){
+      console.log('stop');
       draggableElement.stopDrag();
     }
     store.dispatch(stopDrag());

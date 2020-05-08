@@ -8,6 +8,7 @@ import {
   CONTROLLER_CHOOSE,
   CONTROLLER_SLIDER,
   CONTROLLER_SELECT2,
+  CONTROLLER_LINK,
   TAB_ADVANCED,
   TAB_CONTENT,
   TAB_STYLE
@@ -95,22 +96,32 @@ class RootElement extends BaseElement {
     this.addControl('slider', {
       type: CONTROLLER_SLIDER,
       label: 'Slider Content',
-      default: 0
+      default:{size:12, unit:'px'},
+      rules: {
+        '{{ELEMENT}}': 'padding: {{SIZE}}{{UNIT}};',
+      },
     });
 
     this.addControl('select2', {
       type: CONTROLLER_SELECT2,
       label: 'Select2 Content',
-      select: [ 
+      placeholder: 'placeholder',
+      select: [
         {
-          value: 'select',
+          value: '1',
           label:'Select Content 1'
         }, 
         {
-          value: 'select',
+          value: '2',
           label:'Select Content 2'
-        }
+        },
       ]
+    });
+
+    this.addControl('link', {
+      type: CONTROLLER_LINK,
+      label: 'link content',
+      isActive: false
     });
 
     
