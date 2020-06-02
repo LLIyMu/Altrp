@@ -17,6 +17,9 @@ class SelectController extends Component {
     this.changeValue = this.changeValue.bind(this);
   }
 
+  getDefaultValue(){
+    return '';
+  }
   changeValue(e){
     this._changeValue(e.target.value);
   }
@@ -24,13 +27,13 @@ class SelectController extends Component {
   render() {
 
     return <div className="controller-container controller-container_select">
-      <div className="controller-container__label control-slider__label-select">
+      <div className="controller-container__label control-select__label">
         {this.props.label}
-        <DesktopIcon className="conntroller-container__label-svg" width="12"/>
+        <DesktopIcon className="controller-container__label-svg" width="12"/>
       </div>
       <div className="control-container_select-wrapper">
         <select className="control-select control-field" onChange={this.changeValue}>
-          {this.props.select.map(option => {return <option value={option.value} key={option.value}>{option.label}</option>})}
+          {this.props.options.map(option => {return <option value={option.value} key={option.value}>{option.label}</option>})}
         </select>
       </div>
     </div>

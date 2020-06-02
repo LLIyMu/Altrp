@@ -9,9 +9,14 @@ import {
   CONTROLLER_SLIDER,
   CONTROLLER_SELECT2,
   CONTROLLER_LINK,
+  CONTROLLER_COLOR,
+  CONTROLLER_BUTTON,
+  CONTROLLER_HEADING,
+  CONTROLLER_CSSEDITOR,
   TAB_ADVANCED,
   TAB_CONTENT,
-  TAB_STYLE
+  TAB_STYLE,
+  CONTROLLER_MEDIA,
 } from "../modules/ControllersManager";
 
 class RootElement extends BaseElement {
@@ -40,6 +45,11 @@ class RootElement extends BaseElement {
       label: 'Text Section',
     });
 
+    this.addControl('textContainer', {
+      type: CONTROLLER_TEXT,
+      label: "textContainer"  
+    });
+
     this.addControl('text', {
       type: CONTROLLER_SWITCHER,
       label: 'Switcher Content',
@@ -66,19 +76,39 @@ class RootElement extends BaseElement {
       },
     });
 
-    // this.addControl('dimensions', {
-    //   type: CONTROLLER_DIMENSIONS,
-    //   label: 'Dimensions',
-    // });
+    this.addControl('dimensions', {
+      type: CONTROLLER_DIMENSIONS,
+      label: 'Dimensions',
+      default:{
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        unit:'px'
+      },
+      units:[
+        'px',
+        '%',
+        'vh',
+      ],
+      rules: {
+        '{{ELEMENT}}': [ 
+          'padding-top: {{TOP}}{{UNIT}};',
+          'padding-right: {{RIGHT}}{{UNIT}};',
+          'padding-bottom: {{BOTTOM}}{{UNIT}};',
+          'padding-left: {{LEFT}}{{UNIT}};'
+        ]
+      },
+    });
 
     this.addControl('select', {
       type: CONTROLLER_SELECT,
       label: 'Select Content',
       default: 'select1',
-      select: [
+      options: [
         {
           value: 'select1',
-          label: 'Select Content 1'
+          label: 'Select Content 231'
         },
         {
           value: 'select2',
@@ -90,13 +120,29 @@ class RootElement extends BaseElement {
     this.addControl('choose', {
       type: CONTROLLER_CHOOSE,
       label: 'Choose Content',
-      default: 1
+      default: 1,
+      options:[
+        {
+          icon: 'add',
+          value: 'add',
+        }
+      ],
     });
 
     this.addControl('slider', {
       type: CONTROLLER_SLIDER,
       label: 'Slider Content',
-      default:{size:12, unit:'px'},
+      default:{
+        size:12,
+        unit:'px'
+      },
+      units:[
+        'px',
+        '%',
+        'vh',
+      ],
+      max: 10,
+      min: -10,
       rules: {
         '{{ELEMENT}}': 'padding: {{SIZE}}{{UNIT}};',
       },
@@ -106,10 +152,10 @@ class RootElement extends BaseElement {
       type: CONTROLLER_SELECT2,
       label: 'Select2 Content',
       placeholder: 'placeholder',
-      select: [
+      options: [
         {
           value: '1',
-          label:'Select Content 1'
+          label:'Select sd  Content 1'
         }, 
         {
           value: '2',
@@ -120,11 +166,52 @@ class RootElement extends BaseElement {
 
     this.addControl('link', {
       type: CONTROLLER_LINK,
+      default: {
+        url: "",
+        atributes: "",
+        noFollow: false
+      },
       label: 'link content',
-      isActive: false
     });
 
+    this.addControl('color', {
+      type: CONTROLLER_MEDIA,
+      label: 'color content',
+      colorPickedHex: "#274BC8",
+      presetColors: [
+        "#eaeaea",
+        "#9c18a8"
+      ],
+      rules: {
+        '{{ELEMENT}}': 'background: {{VALUE}};',
+      },
+    });
+
+    this.addControl('button', {
+      type: CONTROLLER_BUTTON,
+      label: 'button content',
+      button: 'button',
+      classes: {
+        backgroundColor: '#20c74c',
+        color: '#FFF'
+      }
+    });
+
+    this.addControl('heading', {
+      type: CONTROLLER_HEADING,
+      default: {
+        label: 'heading'
+      }
+    });
     
+    this.addControl('css editor', {
+      type: CONTROLLER_CSSEDITOR,
+      default: {
+        value: null
+      },
+      rules: '{{VALUE}}'
+    });
+
     this.endControlSection();
 
     this.startControlSection('text_style', {

@@ -10,36 +10,72 @@ class LinkController extends Component {
     this.settings = this.settings.bind(this);
     this.toggleSettingsNewPage = this.toggleSettingsNewPage.bind(this);
     this.toggleSettingsNoFollow = this.toggleSettingsNoFollow.bind(this);
+    this.changeAttribute = this.changeAttribute.bind(this);
+    this.changeInput = this.changeInput.bind(this)
     let value = this.props.currentElement.getSettings(this.props.controlId);
     if(value === null && this.props.default){
       value = this.props.default ;
     }
     value = value || '';
-    this.state = {value, settingsNewPage: false, SettingsNoFollow: false};
+    this.state = {value};
     controllerDecorate(this);
   }
 
-  settings(e) {
+  settings() {
     let settings = document.getElementById("settings");
     settings.classList.toggle("settingBlock-none");
   };
 
   toggleSettingsNewPage(){
-    let settingsNewPage = document.getElementById("SettingsNewPage")
-    this.setState({
-      settingsNewPage:!this.state.settingsNewPage
-    });
-    this.props.currentElement.setSettingValue(this.props.controlId, !this.state.settingsNewPage);
-    settingsNewPage.classList.toggle(".settings-checkbox-active")
+    let toggleSettingsNewPageCheckbox= document.getElementById("toggleSettingsNewPageCheckbox");
+
+    let changeCheckBox = togglesettingsNoFollowCheckbox.hasAttribute("checked")
+    if(toggleSettingsNewPageCheckbox.hasAttribute("checked") == false) {
+      this._changeValue({
+        openInNew: changeCheckBox
+      })
+      toggleSettingsNewPageCheckbox.setAttribute("checked", "checked");
+    } else {
+      this._changeValue({
+        openInNew: changeCheckBox
+      })
+      toggleSettingsNewPageCheckbox.removeAttribute("checked");
+    };
   };
 
   toggleSettingsNoFollow(){
-    let settingsNoFollow = document.getElementById="settingsNoFollow"
-    this.setState({
-      settingsNoFollow:!this.state.SettingsNoFollow
-    });
-    settingsNoFollow.classList.toggle(".settings-checkbox-active")
-    this.props.currentElement.setSettingValue(this.props.controlId, !this.state.SettingsNoFollow);
+    let togglesettingsNoFollowCheckbox = document.getElementById("togglesettingsNoFollowCheckbox")
+
+    let changeCheckBox = togglesettingsNoFollowCheckbox.hasAttribute("checked")
+    if(changeCheckBox == false) {
+      this._changeValue({
+        noFollow: changeCheckBox
+      })
+      togglesettingsNoFollowCheckbox.setAttribute("checked", "checked");
+    } else {
+      togglesettingsNoFollowCheckbox.removeAttribute("checked");
+      this._changeValue({
+        noFollow: changeCheckBox
+      })
+    };
+
+  };
+
+  changeAttribute(e){
+    this._changeValue({
+      atributes:e.target.value
+    })
+    console.log(this.state.value.atributes)
+  }
+
+  changeInput(e){
+    this._changeValue({
+      url:e.target.value
+    })
+  }
+
+  getDefaultValue(){
+    return '';
   }
 
   render(){
@@ -49,7 +85,7 @@ class LinkController extends Component {
         <div className="controller-container__label">{this.props.label}</div>
       </div>
       <div className="control-link-input-wrapper">
-        <input type="url" className="control-link" placeholder="введите ссылку"></input>
+        <input onChange={this.changeInput} value={this.state.value.url} type="text" className="control-link" placeholder="введите ссылку"></input>
         <div className="control-link-settings control-link-button" onClick={this.settings}>
         {/* тут есть проблема с размерами, просто нужно убрать width и height в самой svg но есть одна проблема*/}
           <SettingsIcon width="12"/>
@@ -58,16 +94,25 @@ class LinkController extends Component {
             <DynamicIcon width="12"/>
         </div>
       </div>
-        <div id="settings" className="settingBlock">
-          <div id="settingsNewPage" className="settings-checkbox-option" onClick={this.toggleSettingsNewPage}>
-            <input type="checkbox" className="settings-checkbox"></input>
-            <div className="settings-checkbox__label">Открывать в новом окне</div>
+        <div id="settings" className="settingBlock settingBlock-none">
+          <div className="settings-checkbox-option" onClick={this.toggleSettingsNewPage}>
+            <input id="toggleSettingsNewPageCheckbox" type="checkbox" className="settings-checkbox"></input>
+            <span className="settings-checkbox-container"></span>
+            <label className="settings-checkbox__label">Открывать в новом окне</label>
           </div>
-          <div id="settingsNoFollow" className="settings-checkbox-option" onClick={this.toggleSettingsNoFollow}>
-            <input type="checkbox" className="settings-checkbox"></input>
-            <div className="settings-checkbox__label">Добавить nofollow</div>
+          <div className="settings-checkbox-option" onClick={this.toggleSettingsNoFollow}>
+            <input id="togglesettingsNoFollowCheckbox" type="checkbox" className="settings-checkbox"></input>
+            <span className="settings-checkbox-container"></span>
+            <label className="settings-checkbox__label">Добавить nofollow</label>
           </div>
-        </div>
+          <div className="customAttributes">
+            <div className="control-link-header">
+              <label className="controller-container__label">Произвольные атрибуты</label>
+            </div>
+            <input onChange={this.changeAttribute} value={this.state.value.atributes} type="text" placeholder="key|value, key|value..." className="settings-input-attribute"></input>
+            <a className="settings-attribute-description">Задайте пользовательские атрибуты для ссылки. Отделяйте ключи атрибута от значений с помощью символа | (труба). Разделите пары ключ-значение запятой.</a>
+          </div>
+      </div>
     </div>
   }
 }

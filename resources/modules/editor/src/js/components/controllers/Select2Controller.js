@@ -17,14 +17,16 @@ class Select2Controller extends Component {
     controllerDecorate(this);
   };
 
+  getDefaultValue(){
+    return '';
+  }
+
   render() {
 
     const {selectValue} = useState;
 
     function change() {
-      this.setState({
-        value: selectValue
-      })
+      this._changeValue(selectValue)
     }
 
     const customStyles = {
@@ -79,14 +81,14 @@ class Select2Controller extends Component {
 
     return <div className="controller-container controller-container_select2">
       <div className="control-select2-header">
-        <div className="control-slider__label-select2">{this.props.label}</div>
-        <DesktopIcon className="conntroller-container__label-svg" width="12"/>
+        <div className="control-select2__label">{this.props.label}</div>
+        <DesktopIcon className="controller-container__label-svg" width="12"/>
       </div>
       <div className="control-container_select2-wrapper">
         <Select
           onChange={selectValue}
           onInputChange={this.change}
-          options={this.props.select}
+          options={this.props.options}
           styles={customStyles}
           placeholder={this.props.placeholder}
           noOptionsMessage={() => "тут пусто"}
