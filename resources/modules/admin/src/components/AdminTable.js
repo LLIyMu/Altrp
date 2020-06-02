@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {Link} from 'react-router-dom'
 
 class AdminTable extends Component {
   render(){
@@ -18,9 +19,38 @@ class AdminTable extends Component {
             <td className="admin-table__td admin-table__td_check" key={'choose' + row.id}><input type="checkbox"/></td>
             {
               this.props.columns.map(column=>
-              <td className="admin-table__td" key={column.name + row.id}>
-                {row[column.name]}
-              </td>)
+              {
+                let tag = 'span';
+                let props = {
+                  className: 'td__content',
+                  children: [row[column.name]]
+                };
+                if(column.url && row.url){
+                  tag = 'a';
+                  props.href = row.url;
+                  if(column.target){
+                    props.target = column.target;
+                  }
+                }
+                if(column.editUrl && row.editUrl){
+                  tag = (column.tag === 'Link') ? Link : 'a';
+                  props.href = row.editUrl;
+                  if(column.tag === 'Link'){
+                    props.to = {
+                      pathname: row.editUrl,
+                      data: row
+                    }
+                  }
+                  if(column.target){
+                    props.target = column.target;
+                  }
+                }
+                return<td className="admin-table__td td"  key={column.name + row.id}>
+                  {React.createElement(tag, props)}
+
+                </td>
+              }
+             )
             }
           </tr>)
         }

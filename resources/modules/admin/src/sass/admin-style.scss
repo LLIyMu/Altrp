@@ -1,9 +1,12 @@
+@import "~bootstrap/dist/css/bootstrap.css";
 @import "../../../../sass/common";
 @import "../../../../sass/vars";
 @import "components/admin-heading";
 @import "components/elements";
 @import "components/admin-table";
 @import "components/admin-modal";
+@import "components/admin-assets";
+
 
 .admin {
   display: flex;

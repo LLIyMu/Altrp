@@ -1,7 +1,8 @@
 import BaseElement from "./BaseElement";
 import {
   CONTROLLER_DIMENSIONS,
-  CONTROLLER_NUMBER, CONTROLLER_SWITCHER,
+  CONTROLLER_NUMBER, 
+  CONTROLLER_SWITCHER,
   CONTROLLER_TEXT,
   CONTROLLER_TEXTAREA,
   CONTROLLER_SELECT,
@@ -13,6 +14,8 @@ import {
   CONTROLLER_BUTTON,
   CONTROLLER_HEADING,
   CONTROLLER_CSSEDITOR,
+  CONTROLLER_SHADOW,
+  CONTROLLER_TRANSFORM,
   TAB_ADVANCED,
   TAB_CONTENT,
   TAB_STYLE,
@@ -46,7 +49,7 @@ class RootElement extends BaseElement {
     });
 
     this.addControl('textContainer', {
-      type: CONTROLLER_TEXT,
+      type: CONTROLLER_MEDIA,
       label: "textContainer"  
     });
 
@@ -77,6 +80,31 @@ class RootElement extends BaseElement {
     });
 
     this.addControl('dimensions', {
+      type: CONTROLLER_DIMENSIONS,
+      label: 'Dimensions',
+      default:{
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        unit:'px'
+      },
+      units:[
+        'px',
+        '%',
+        'vh',
+      ],
+      rules: {
+        '{{ELEMENT}}': [ 
+          'padding-top: {{TOP}}{{UNIT}};',
+          'padding-right: {{RIGHT}}{{UNIT}};',
+          'padding-bottom: {{BOTTOM}}{{UNIT}};',
+          'padding-left: {{LEFT}}{{UNIT}};'
+        ]
+      },
+    });
+
+    this.addControl('dimenssions', {
       type: CONTROLLER_DIMENSIONS,
       label: 'Dimensions',
       default:{
@@ -152,6 +180,7 @@ class RootElement extends BaseElement {
       type: CONTROLLER_SELECT2,
       label: 'Select2 Content',
       placeholder: 'placeholder',
+      default: '1',
       options: [
         {
           value: '1',
@@ -168,33 +197,129 @@ class RootElement extends BaseElement {
       type: CONTROLLER_LINK,
       default: {
         url: "",
-        atributes: "",
+        attributes: "",
         noFollow: false
       },
       label: 'link content',
     });
 
     this.addControl('color', {
-      type: CONTROLLER_MEDIA,
+      type: CONTROLLER_COLOR,
       label: 'color content',
-      colorPickedHex: "#274BC8",
+      default: {
+        color: "rgb(234, 234, 234)",
+        colorPickedHex: "#EAEAEA",
+      },
       presetColors: [
         "#eaeaea",
         "#9c18a8"
       ],
       rules: {
-        '{{ELEMENT}}': 'background: {{VALUE}};',
+        '{{ELEMENT}}': 'background: {{COLOR}};',
       },
     });
 
     this.addControl('button', {
       type: CONTROLLER_BUTTON,
-      label: 'button content',
-      button: 'button',
-      classes: {
-        backgroundColor: '#20c74c',
-        color: '#FFF'
-      }
+      value: 'normal',
+      buttons: [
+        {
+          value: 'normal',
+          label: 'normal',
+          key: 0,
+          styles: {
+            background: 'none',
+            color: '#FFF',
+            borderRadius: '3px',
+            border: '1.5px solid #3C455B',
+            color: '#3C455B',
+            margin: '6px',
+            marginLeft: '0',
+            marginTop: '3px',
+            marginBottom: '3px',
+            paddingTop: '5px',
+            paddingBottom: '5px',
+            paddingLeft: '3px',
+            paddingRight: '3px',
+            fontSize: '12px',
+            fontFamily: 'Montserrat',
+            lineHeight: '15px',
+            fontWeight: 'bold'
+          },     
+        },
+        {
+          value: 'Hover',
+          label: 'Hover',
+          key: 1,
+          styles: {
+            background: 'none',
+            color: '#FFF',
+            borderRadius: '3px',
+            border: '1.5px solid #3C455B',
+            color: '#3C455B',
+            margin: '6px',
+            marginLeft: '2px',
+            marginTop: '3px',
+            marginBottom: '3px',
+            paddingTop: '5px',
+            paddingBottom: '5px',
+            paddingLeft: '3px',
+            paddingRight: '3px',
+            fontSize: '12px',
+            fontFamily: 'Montserrat',
+            lineHeight: '15px',
+            fontWeight: 'bold'
+          }
+        },
+        {
+          value: 'active',
+          label: 'active',
+          key: 2,
+          styles: {
+            background: 'none',
+            color: '#FFF',
+            borderRadius: '3px',
+            border: '1.5px solid #3C455B',
+            color: '#3C455B',
+            margin: '6px',
+            marginLeft: '2px',
+            marginTop: '3px',
+            marginBottom: '3px',
+            paddingTop: '5px',
+            paddingBottom: '5px',
+            paddingLeft: '3px',
+            paddingRight: '3px',
+            fontSize: '12px',
+            fontFamily: 'Montserrat',
+            lineHeight: '15px',
+            fontWeight: 'bold'
+          }
+        },
+        {
+          value: 'disabled',
+          label: 'disabled',
+          key: 3,
+          styles: {
+            background: 'none',
+            color: '#FFF',
+            borderRadius: '3px',
+            border: '1.5px solid #3C455B',
+            color: '#3C455B',
+            margin: '6px',
+            marginLeft: '2px',
+            marginTop: '3px',
+            marginBottom: '3px',
+            paddingTop: '5px',
+            paddingBottom: '5px',
+            paddingLeft: '3px',
+            paddingRight: '3px',
+            fontSize: '12px',
+            fontFamily: 'Montserrat',
+            lineHeight: '15px',
+            fontWeight: 'bold'
+          }
+        }
+      ],
     });
 
     this.addControl('heading', {
@@ -209,9 +334,78 @@ class RootElement extends BaseElement {
       default: {
         value: null
       },
-      rules: '{{VALUE}}'
     });
 
+    this.addControl('box-shadow', {
+      type: CONTROLLER_SHADOW,
+      label: 'box shadow',
+      default:{
+        blur: 0,
+        horizontal: 0,
+        vertical: 0,
+        color: 'rgb(0, 0, 0)',
+        colorPickedHex: '#000000',
+      },
+      presetColors: [
+        "#eaeaea",
+        "#9c18a8"
+      ],
+      rules: {
+        '{{ELEMENT}}': 'box-shadow: {{HORIZONTAL}}px {{VERTICAL}}px {{BLUR}}px {{COLOR}};',
+      },
+    });
+
+    this.addControl('transform Header', {
+      type: CONTROLLER_HEADING,
+      default: {
+        label: 'transform'
+      }
+    })
+
+    this.addControl('transform', {
+      type: CONTROLLER_TRANSFORM,
+      label: 'transform',
+      default: {
+        size: 0
+      },
+      options: [
+        {
+          label: 'none',
+          value: ''
+        },
+        {
+          label: 'rotate',
+          value: 'rotate',
+        },
+        {
+          label: 'scaleX',
+          value: 'scaleX',
+        },
+        {
+          label: 'scaleY',
+          value: 'scaleY',
+        },
+        {
+          label: 'skewY',
+          value: 'skewY',
+        },
+        {
+          label: 'skewX',
+          value: 'skewX',
+        },
+        {
+          label: 'translateX',
+          value: 'translateX',
+        },
+        {
+          label: 'translateY',
+          value: 'translateY',
+        }
+      ],
+      rules: {
+        '{{ELEMENT}}': 'transform: {{FUNCTION}}( {{SIZE}}{{UNIT}} )'
+      }
+    })
     this.endControlSection();
 
     this.startControlSection('text_style', {
@@ -285,7 +479,7 @@ class RootElement extends BaseElement {
     this.appendChild(newSection);
   }
   getSelector(){
-    return `altrp-template-root${this.getId()}`;
+    return `.altrp-template-root${this.getId()}`;
   }
 }
 

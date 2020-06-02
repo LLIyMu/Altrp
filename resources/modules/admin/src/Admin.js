@@ -8,7 +8,7 @@ import AssetSvg from './svgs/assets.svg';
 import BurgerSvg from './svgs/burger.svg';
 import CloseBurgerSvg from './svgs/closeburger.svg';
 import DashboardSvg from './svgs/dashboard.svg';
-import PageSvg from './svgs/pages.svg';
+import PagesSvg from './svgs/pages.svg';
 import PluginSvg from './svgs/plugins.svg';
 import ReportSvg from './svgs/reports.svg';
 import SettingSvg from './svgs/settings.svg';
@@ -31,6 +31,7 @@ import Reports from "./components/Reports";
 import Tables from "./components/Tables";
 import Templates from "./components/Templates";
 import AdminModal from "./components/AdminModal";
+import AddPage from "./components/AddPage";
 
 class Admin extends Component {
   render() {
@@ -89,13 +90,16 @@ class Admin extends Component {
                     <span>Settings</span>
                   </Link>
                 </li>
+                <li>
+                  <Link to="/admin/pages" className="admin-nav-list__link">
+                    <PagesSvg className="icon"/>
+                    <span>Pages</span>
+                  </Link>
+                </li>
               </ul>
             </div>
           </nav>
           <Switch>
-            <Route path="/admin/pages">
-              <AllPages/>
-            </Route>
             <Route path="/admin/settings">
               <AdminSettings/>
             </Route>
@@ -119,6 +123,15 @@ class Admin extends Component {
             </Route>
             <Route path="/admin/templates">
               <Templates/>
+            </Route>
+            <Route path="/admin/pages" exact>
+              <AllPages/>
+            </Route>
+            <Route path="/admin/pages/edit/:id">
+              <AddPage/>
+            </Route>
+            <Route path="/admin/pages/add">
+              <AddPage/>
             </Route>
           </Switch>
         </Router>

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Constructor\Template;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class TemplateController extends Controller
 {
@@ -16,7 +16,7 @@ class TemplateController extends Controller
    */
   public function index( Request $request )
   {
-    $_templates = Template::where( 'type', '!=', 'review' )->get();
+    $_templates = Template::where( 'type', '!=', 'review' )->get()->sortByDesc( 'id' )->values();
     $templates = [];
     foreach ( $_templates as $template ) {
       $templates[] = [
@@ -25,10 +25,32 @@ class TemplateController extends Controller
         'title' => $template->title,
         'id' => $template->id,
         'author' => $template->user->name,
+        'url' => \url('/admin/editor?template_id=' . $template->id),
       ];
     }
 
     return \response()->json( $templates );
+  }
+
+  /**
+   * Send array for frontend <option> tags ({
+   *     id,
+   *    title
+   * }).
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options(){
+    $_templates = Template::where( 'type', '!=', 'review' )->get();
+    $options = [];
+
+    foreach ( $_templates as $template ) {
+      $options[] = [
+        'id' => $template->id,
+        'title' => $template->title,
+      ];
+    }
+    return \response()->json( $options );
   }
 
   /**

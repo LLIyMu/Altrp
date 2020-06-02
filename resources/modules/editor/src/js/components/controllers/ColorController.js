@@ -1,35 +1,37 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import { SketchPicker } from "react-color"
-import DynamicIcon from '../../../svgs/dynamic.svg'
 import controllerDecorate from "../../decorators/controller";
 
 class ColorController extends Component {
   constructor(props){
     super(props);
     this.openColorPicker = this.openColorPicker.bind(this)
-    this.colorChange = this.colorChange.bind(this)
+    this.colorChange = this.colorChange.bind(this);
     // this.inputHex = this.inputHex.bind(this)
     let value = this.props.currentElement.getSettings(this.props.controlId);
     if(value === null && this.props.default){
       value = this.props.default ;
     }
     value = value || '';
-    this.state = {value, 
-      colorPickedHex: this.props.colorPickedHex, 
+    this.state = {value,
+      colorPickedHex: this.props.colorPickedHex,
       opacity: 1, 
       pickerPosition: "0px", 
-      colorRGB: {r: "0", g: "0", b: "0", a: "1"}, 
-      colorPickedRGB: "rgb(39,75,200,1)"
+      colorRGB: this.props.colorPickedRGB, 
+      colorPickedRGB: this.props.colorPickedRGB
     };
     controllerDecorate(this);
+  }
+
+  getDefaultValue(){
+    return '';
   }
 
   openColorPicker(){
     let colorPicker = document.getElementById("colorPicker");
     let topPicker = colorPicker.offsetTop;
 
-    console.log(topPicker)
     colorPicker.classList.toggle("sketchPicker-none");
 
     this.props.currentElement.setSettingValue(this.props.controlId, topPicker);
@@ -42,13 +44,11 @@ class ColorController extends Component {
       opacity: color.rgb.a,
       colorRGB: color.rgb
     });
-
-    this._changeValue(
-      `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`
-    )
+    this._changeValue({
+      color: `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`,
+    });
 
     // console.log(this.state.colorPickedRGB)
-    this.props.currentElement.setSettingValue(this.props.controlId, color.rgb);
   };
 
   // inputHex(e){
@@ -74,15 +74,14 @@ class ColorController extends Component {
   render(){
 
     let colorPickedStyle = {
-      backgroundColor: this.state.colorPickedRGB
+      backgroundColor: this.state.value.color
     };
 
     let colorPickerPosition = {
       marginTop: this.state.pickerPosition
     };
-
     return <div className="controller-container controller-container_color">
-        <div className="control-link-header">
+        <div className="control-color-header">
             <div className="controller-container__label">{this.props.label}</div>
             {/* <div className="controller-newColor"></div> */}
         </div>
@@ -91,7 +90,7 @@ class ColorController extends Component {
                 <div className="control-color-colorPicked-container">
                   <div className="control-color-colorPicked" style={colorPickedStyle}></div>
                 </div>
-                <label className="control-color-hex">{this.state.colorPickedHex}</label>
+                <label className="control-color-hex">{this.state.value.colorPickedHex}</label>
             </div>
             <div className="control-color-opacity-container">
               <label className="control-color-opacity" >{(this.state.opacity * 100).toFixed() + "%"}</label>
