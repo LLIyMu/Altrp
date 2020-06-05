@@ -1,10 +1,10 @@
-import Template from './Template';
+import Template from "./Template";
 /**
  * @property {Template} template
  * @property {Object} settings
  * */
 class Area {
-  static areaFabric(areaData){
+  static areaFabric(areaData) {
     let area = new Area();
     area.settings = areaData.settings;
     area.id = areaData.id;
@@ -15,4 +15,4 @@ class Area {
   }
 }
 
-export default Area
+export default Area;

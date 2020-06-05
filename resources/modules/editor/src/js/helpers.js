@@ -1,32 +1,31 @@
-
-export function getTemplateId(){
-  return (new URL(window.location)).searchParams.get('template_id');
+export function getTemplateId() {
+  return new URL(window.location).searchParams.get("template_id");
 }
 /**
  * @param {array} names
  * */
 export function getClassNames(names) {
-  if(! names.length){
-    return '';
+  if (!names.length) {
+    return "";
   }
-  let result = '';
-  for(let cssClass of names){
-    result += cssClass + ' ';
+  let result = "";
+  for (let cssClass of names) {
+    result += cssClass + " ";
   }
   return result;
 }
 
 export function settingToState(setting) {
-  if(! setting){
-    return{};
+  if (!setting) {
+    return {};
   }
-    return {
+  return {
     value: setting.getValue(),
     label: setting.getLabel(),
   };
 }
 
-export function getEditorContent(){
+export function getEditorContent() {
   return window.frames[0].window.altrpEditorContent;
 }
 /**
@@ -43,21 +42,21 @@ export function isEditor() {
   return !!(window.altrpEditor || window.parent.altrpEditor);
 }
 
-export function editorSetCurrentElement(element){
+export function editorSetCurrentElement(element) {
   getEditor().modules.templateDataStorage.setCurrentElement(element);
 }
 /**
  * @return {TemplateDataStorage}
  * */
 export function getTemplateDataStorage() {
-  return window.altrpEditor.modules.templateDataStorage
+  return window.altrpEditor.modules.templateDataStorage;
 }
 
 export const CONSTANTS = {
-  TEMPLATE_UPDATED: 'TEMPLATE_UPDATED',
-  TEMPLATE_NEED_UPDATE: 'TEMPLATE_NEED_UPDATE',
-  TEMPLATE_SAVING: 'TEMPLATE_SAVING',
-  DEFAULT_BREAKPOINT: 'DEFAULT_BREAKPOINT',
+  TEMPLATE_UPDATED: "TEMPLATE_UPDATED",
+  TEMPLATE_NEED_UPDATE: "TEMPLATE_NEED_UPDATE",
+  TEMPLATE_SAVING: "TEMPLATE_SAVING",
+  DEFAULT_BREAKPOINT: "DEFAULT_BREAKPOINT",
 };
 
 export function getFactory() {
@@ -70,7 +69,7 @@ export function getFactory() {
 export function topOrBottomHover(e, element) {
   let rect = element.getBoundingClientRect();
   let y = e.clientY - rect.top;
-  return (y < (rect.height / 2)) ? 'top' : 'bottom';
+  return y < rect.height / 2 ? "top" : "bottom";
 }
 /**
  * @return {IconsManager}
@@ -87,12 +86,12 @@ export function iconsManager() {
  * */
 export function renderAsset(asset, props = null) {
   switch (asset.assetType) {
-    case 'icon': {
-      return iconsManager().renderIcon(asset.name)
+    case "icon": {
+      return iconsManager().renderIcon(asset.name);
     }
-    case 'image': {
-      return React.createElement('img', {...props, src: asset.url})
+    case "image": {
+      return React.createElement("img", { ...props, src: asset.url });
     }
   }
-  return '';
+  return "";
 }

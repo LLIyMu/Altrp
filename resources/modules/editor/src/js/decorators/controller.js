@@ -1,25 +1,25 @@
 function componentDidUpdate() {
   let elementValue = this.props.currentElement.getSettings(this.props.controlId);
-  if(this.state.value !== elementValue){
-    if(elementValue === null){
+  if (this.state.value !== elementValue) {
+    if (elementValue === null) {
       elementValue = this.getDefaultValue();
       this.props.currentElement.setSettingValue(this.props.controlId, elementValue);
     }
     this.setState({
-      value: elementValue
+      value: elementValue,
     });
   }
 }
 
 function _changeValue(value) {
-  if(typeof value === 'object'){
-    value = {...value};
+  if (typeof value === "object") {
+    value = { ...value };
   }
-  this.setState((state)=>{
+  this.setState((state) => {
     return {
       ...state,
       value,
-    }
+    };
   });
   this.props.controller.changeValue(value);
 }

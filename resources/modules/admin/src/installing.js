@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import lodash from 'lodash';
+import lodash from "lodash";
 
 window.React = React;
 window.ReactDOM = ReactDOM;

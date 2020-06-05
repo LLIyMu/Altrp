@@ -1,20 +1,20 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 class HeadingWidget extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      settings: props.element.getSettings()
+      settings: props.element.getSettings(),
     };
     props.element.component = this;
-    if(window.elementDecorator){
+    if (window.elementDecorator) {
       window.elementDecorator(this);
     }
   }
 
-  render(){
+  render() {
     return <h1 className="heading">{this.state.settings.text}</h1>;
   }
 }
 
-export default HeadingWidget
+export default HeadingWidget;

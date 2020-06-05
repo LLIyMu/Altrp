@@ -1,15 +1,15 @@
 import FrontElement from "./FrontElement";
 
 class FrontElementsFabric {
-  parseData(object){
+  parseData(object) {
     let children = [];
     /**
      * @member {FrontElement} element
      * */
     let element = new FrontElement(object);
-    if( object.children && object.children.length ){
-      for( let child of object.children){
-        children.push( this.parseData( child ) );
+    if (object.children && object.children.length) {
+      for (let child of object.children) {
+        children.push(this.parseData(child));
       }
     }
     element.id = object.id;

@@ -1,4 +1,2 @@
-class SettingsChangeModule {
-
-}
+class SettingsChangeModule {}
 export default SettingsChangeModule;

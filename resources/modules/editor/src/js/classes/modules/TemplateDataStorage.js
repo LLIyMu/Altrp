@@ -1,23 +1,25 @@
 import RootElement from "../elements/RootElement";
-import {CONSTANTS, getEditor, getTemplateId} from "../../helpers";
+import { CONSTANTS, getEditor, getTemplateId } from "../../helpers";
 import BaseModule from "./BaseModule";
-import store from '../../store/store';
-import {setCurrentElement, SET_CURRENT_ELEMENT} from '../../store/current-element/actions'
+import store from "../../store/store";
+import {
+  setCurrentElement,
+  SET_CURRENT_ELEMENT,
+} from "../../store/current-element/actions";
 import BaseElement from "../elements/BaseElement";
 import Section from "../elements/Section";
 import Column from "../elements/Column";
-import {changeTemplateStatus} from "../../store/template-status/actions";
+import { changeTemplateStatus } from "../../store/template-status/actions";
 
-class TemplateDataStorage extends BaseModule{
-
-  constructor(modules){
+class TemplateDataStorage extends BaseModule {
+  constructor(modules) {
     super(modules);
     this.elementsIds = [];
   }
 
   replaceAll(element) {
-    if(! element instanceof RootElement ){
-      throw 'Expect Root Element as root element;)';
+    if (!element instanceof RootElement) {
+      throw "Expect Root Element as root element;)";
     }
     this.rootElement = element;
     this.elementsIds = element.getIds();
@@ -27,62 +29,61 @@ class TemplateDataStorage extends BaseModule{
   getTemplateData() {
     return this.rootElement.toObject();
   }
-  getTemplateDataForSave(){
+  getTemplateDataForSave() {
     let data = {};
 
     data.data = this.getTemplateData();
-    data.title = this.title || 'testtitle';
-    data.name = this.name || 'testname';
+    data.title = this.title || "testtitle";
+    data.name = this.name || "testname";
     console.log(this);
     return data;
   }
 
-  setTitle(title){
+  setTitle(title) {
     console.log(title);
     this.title = title;
     console.log(this);
   }
 
-
-  setName(name){
+  setName(name) {
     console.log(name);
     this.name = name;
     console.log(this);
   }
 
-  setCurrentRootElement(){
+  setCurrentRootElement() {
     this.currentElement = this.rootElement;
     store.dispatch(setCurrentElement(this.currentElement));
     return this.currentElement;
   }
 
-  setCurrentElement(element){
-    if(! element instanceof BaseElement){
-      throw 'Only Base Element Can Be Set as Default'
+  setCurrentElement(element) {
+    if (!element instanceof BaseElement) {
+      throw "Only Base Element Can Be Set as Default";
     }
     this.currentElement = element;
     store.dispatch(setCurrentElement(element));
   }
 
-  getCurrentElement(){
-    if(!this.currentElement){
+  getCurrentElement() {
+    if (!this.currentElement) {
       return this.setCurrentRootElement();
     }
     return this.currentElement;
   }
 
-  getRootElement(){
-    return this.rootElement
+  getRootElement() {
+    return this.rootElement;
   }
 
-  addWidgetInSection(elementName){
+  addWidgetInSection(elementName) {
     let newSection = new Section();
     this.elementsIds.push(newSection.getId());
 
     let newColumn = new Column();
     this.elementsIds.push(newColumn.getId());
 
-    let newWidget = new (window.elementsManager.getElementClass(elementName));
+    let newWidget = new (window.elementsManager.getElementClass(elementName))();
     this.elementsIds.push(newWidget.getId());
 
     newColumn.appendWidget(newWidget);
@@ -92,7 +93,6 @@ class TemplateDataStorage extends BaseModule{
     store.dispatch(changeTemplateStatus(CONSTANTS.TEMPLATE_NEED_UPDATE));
     getEditor().showSettingsPanel();
   }
-
 }
 
 export default TemplateDataStorage;

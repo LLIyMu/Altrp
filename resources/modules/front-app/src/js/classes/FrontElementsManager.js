@@ -7,26 +7,23 @@ import ButtonWidget from "../../../../editor/src/js/components/widgets/ButtonWid
 import TextWidget from "../../../../editor/src/js/components/widgets/TextWidget";
 
 export default class FrontElementsManager {
-
-  constructor(){
+  constructor() {
     //список компонентов
     this.components = {};
-    this.components['root-element'] = RootComponent;
-    this.components['heading'] = HeadingWidget;
-    this.components['section'] = SectionComponent;
-    this.components['column'] = ColumnComponent;
-    this.components['input'] = InputWidget;
-    this.components['button'] = ButtonWidget;
-    this.components['text'] = TextWidget;
+    this.components["root-element"] = RootComponent;
+    this.components["heading"] = HeadingWidget;
+    this.components["section"] = SectionComponent;
+    this.components["column"] = ColumnComponent;
+    this.components["input"] = InputWidget;
+    this.components["button"] = ButtonWidget;
+    this.components["text"] = TextWidget;
   }
 
-  getComponentClass(name){
-    if(! this.components[name] ){
-      throw 'Не найден компонент с именем ' + name;
+  getComponentClass(name) {
+    if (!this.components[name]) {
+      throw "Не найден компонент с именем " + name;
     }
     return this.components[name];
   }
-
 }
 window.frontElementsManager = new FrontElementsManager();
-

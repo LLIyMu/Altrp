@@ -1,5 +1,3 @@
-class ModelStorage {
+class ModelStorage {}
 
-}
-
-export default ModelStorage
+export default ModelStorage;

@@ -1,30 +1,28 @@
-import React, {Component} from "react";
-
+import React, { Component } from "react";
 
 class EditorWindow extends Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {};
   }
 
   render() {
-
-    return  <div className="editor-window">
-
-      {/*<Frame>*/}
+    return (
+      <div className="editor-window">
+        {/*<Frame>*/}
         {/*<FrameBindingContext>*/}
-          {/*<DropTarget/>*/}
+        {/*<DropTarget/>*/}
         {/*</FrameBindingContext>*/}
-      {/*</Frame>*/}
-      {/*<Frame src="/admin/editor-content" >*/}
+        {/*</Frame>*/}
+        {/*<Frame src="/admin/editor-content" >*/}
         {/*<FrameBindingContext/>*/}
-      {/*</Frame>*/}
-      {/*<FrameContextConsumer>*/}
-      <iframe src="/admin/editor-content" />
-      {/*</FrameContextConsumer>*/}
-    </div>
+        {/*</Frame>*/}
+        {/*<FrameContextConsumer>*/}
+        <iframe src="/admin/editor-content" />
+        {/*</FrameContextConsumer>*/}
+      </div>
+    );
   }
 }
 
-export default EditorWindow
+export default EditorWindow;

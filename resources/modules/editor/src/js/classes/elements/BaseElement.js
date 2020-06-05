@@ -1,11 +1,21 @@
-import {CONTROLLER_TEXT, CONTROLLER_TEXTAREA, TAB_CONTENT, TAB_STYLE} from "../modules/ControllersManager";
-import {getTemplateDataStorage, isEditor, getEditor, CONSTANTS, templateNeedUpdate} from "../../helpers";
-import {changeTemplateStatus} from "../../store/template-status/actions";
+import {
+  CONTROLLER_TEXT,
+  CONTROLLER_TEXTAREA,
+  TAB_CONTENT,
+  TAB_STYLE,
+} from "../modules/ControllersManager";
+import {
+  getTemplateDataStorage,
+  isEditor,
+  getEditor,
+  CONSTANTS,
+  templateNeedUpdate,
+} from "../../helpers";
+import { changeTemplateStatus } from "../../store/template-status/actions";
 import store from "../../store/store";
 
 class BaseElement {
-
-  constructor(){
+  constructor() {
     this.settings = {};
     this.controls = {};
     this.controlsIds = [];
@@ -17,30 +27,30 @@ class BaseElement {
     this._initDefaultSettings();
   }
 
-  getId(){
-    if(! this.id){
+  getId() {
+    if (!this.id) {
       this.id = BaseElement.generateId();
     }
     return this.id;
   }
 
-  getName(){
+  getName() {
     return this.constructor.getName();
   }
 
-  getType(){
+  getType() {
     return this.constructor.getType();
   }
 
-  getTitle(){
+  getTitle() {
     return this.constructor.getTitle();
   }
 
-  static generateId(){
-    return '_' + Math.random().toString(36).substr(2, 9);
+  static generateId() {
+    return "_" + Math.random().toString(36).substr(2, 9);
   }
 
-  toObject(){
+  toObject() {
     // if(!this.component){
     //   throw 'Element Must Composites with Some Component';
     // }
@@ -50,26 +60,26 @@ class BaseElement {
     data.settings = this.settings;
     data.type = this.getType();
     let children = this.getChildrenForImport();
-    if(children){
+    if (children) {
       data.children = children;
     }
     return data;
   }
 
   getChildrenForImport() {
-    if(! this.children.length){
-      return[];
+    if (!this.children.length) {
+      return [];
     }
     let children = [];
-    for( let _c of this.children ){
-      children.push(_c.toObject())
+    for (let _c of this.children) {
+      children.push(_c.toObject());
     }
     return children;
   }
 
-  getChildren(){
-    if(! this.children.length){
-      return[];
+  getChildren() {
+    if (!this.children.length) {
+      return [];
     }
     return this.children;
   }
@@ -77,38 +87,38 @@ class BaseElement {
   /**
    * @param {BaseElement} child
    * */
-  appendChild(child){
+  appendChild(child) {
     this.children.push(child);
     child.setParent(this);
-    if(this.component && typeof this.component.setChildren === 'function'){
+    if (this.component && typeof this.component.setChildren === "function") {
       this.component.setChildren(this.children);
     }
     this.templateNeedUpdate();
   }
 
-  insertSiblingAfter(newSibling){
+  insertSiblingAfter(newSibling) {
     this.parent.insertNewChildAfter(this.getId(), newSibling);
   }
 
-  insertSiblingBefore(newSibling){
+  insertSiblingBefore(newSibling) {
     this.parent.insertNewChildBefore(this.getId(), newSibling);
   }
   /**
    * @param {string} childId
    * @param {BaseElement} newChild
    * */
-  insertNewChildAfter(childId, newChild){
+  insertNewChildAfter(childId, newChild) {
     let index;
-    this.children.map((childItem, idx)=>{
-      if(childItem.getId() === childId){
+    this.children.map((childItem, idx) => {
+      if (childItem.getId() === childId) {
         index = idx;
       }
     });
-    if(index === undefined){
-      throw 'childId not found when insertNewChildAfter'
+    if (index === undefined) {
+      throw "childId not found when insertNewChildAfter";
     }
     newChild.setParent(this);
-    this.children.splice(index+1, 0, newChild);
+    this.children.splice(index + 1, 0, newChild);
     this.component.setChildren(this.children);
     this.templateNeedUpdate();
   }
@@ -116,15 +126,15 @@ class BaseElement {
    * @param {string} childId
    * @param {BaseElement} newChild
    * */
-  insertNewChildBefore(childId, newChild){
+  insertNewChildBefore(childId, newChild) {
     let index;
-    this.children.map((childItem, idx)=>{
-      if(childItem.getId() === childId){
+    this.children.map((childItem, idx) => {
+      if (childItem.getId() === childId) {
         index = idx;
       }
     });
-    if(index === undefined){
-      throw 'childId not found when insertNewChildBefore'
+    if (index === undefined) {
+      throw "childId not found when insertNewChildBefore";
     }
     newChild.setParent(this);
     this.children.splice(index, 0, newChild);
@@ -135,30 +145,30 @@ class BaseElement {
   /**
    * @param {BaseElement} target
    * */
-  insertAfter(target){
+  insertAfter(target) {
     target.insertSiblingAfter(this);
   }
   /**
    * @param {BaseElement} target
    * */
-  insertBefore(target){
+  insertBefore(target) {
     target.insertSiblingBefore(this);
   }
 
-  templateNeedUpdate(){
+  templateNeedUpdate() {
     store.dispatch(changeTemplateStatus(CONSTANTS.TEMPLATE_NEED_UPDATE));
   }
   /**
    * @param {BaseElement[]} newChildren
    * */
-  setChildren(newChildren){
+  setChildren(newChildren) {
     this.children = newChildren;
   }
   /**
    * @param {BaseElement[]} newChildren
    * */
-  updateChildren(newChildren){
-    if(newChildren){
+  updateChildren(newChildren) {
+    if (newChildren) {
       this.children = newChildren;
     }
     this.component.setChildren(this.children);
@@ -168,53 +178,56 @@ class BaseElement {
    * @param {BaseElement | string} child
    * @throws Если не указан IG или сам элемент
    * */
-  deleteChild(child){
+  deleteChild(child) {
     let childExist = false;
-    let childId ;
-    if(typeof child === 'string'){
+    let childId;
+    if (typeof child === "string") {
       childId = child;
-    } else if(child instanceof BaseElement){
+    } else if (child instanceof BaseElement) {
       childId = child.getId();
     } else {
-      throw 'Delete Child can only by id or Instance';
+      throw "Delete Child can only by id or Instance";
     }
-    let newChildren = this.children.filter(item => {
-      if(item.getId() === childId){
+    let newChildren = this.children.filter((item) => {
+      if (item.getId() === childId) {
         childExist = true;
         item.beforeDelete();
         return false;
       }
-      return true
+      return true;
     });
-    if(!childExist){
-      throw 'Element not Found for Delete'
+    if (!childExist) {
+      throw "Element not Found for Delete";
     }
     this.updateChildren(newChildren);
   }
 
-  removeFromParent(){
+  removeFromParent() {
     this.parent.deleteChild(this);
   }
 
   beforeDelete() {
-    this.children.map(item => {
+    this.children.map((item) => {
       item.beforeDelete();
     });
-    if(getTemplateDataStorage().getCurrentElement().getId() === this.getId()){
+    if (getTemplateDataStorage().getCurrentElement().getId() === this.getId()) {
       getTemplateDataStorage().setCurrentRootElement();
       getEditor().showWidgetsPanel();
     }
   }
 
-  getSettings(settingName){
+  getSettings(settingName) {
     this._initDefaultSettings();
-    if(! settingName){
+    if (!settingName) {
       return this.settings;
     }
-    if(this.settings[settingName] === undefined){
-      let control = window.controllersManager.getElementControl(this.getName(), settingName);
+    if (this.settings[settingName] === undefined) {
+      let control = window.controllersManager.getElementControl(
+        this.getName(),
+        settingName
+      );
 
-      if(! control || !control.default){
+      if (!control || !control.default) {
         return null;
       }
       this.settings[settingName] = control.default;
@@ -222,24 +235,26 @@ class BaseElement {
     return this.settings[settingName];
   }
 
-  _initDefaultSettings(){
-    if(!window.controllersManager || this.initiatedDefaults){
+  _initDefaultSettings() {
+    if (!window.controllersManager || this.initiatedDefaults) {
       return;
     }
     let controls = window.controllersManager.getControls(this.getName());
 
-    for (let tabName in controls){
-      if(controls.hasOwnProperty(tabName)){
-        if(!controls[tabName].length){
+    for (let tabName in controls) {
+      if (controls.hasOwnProperty(tabName)) {
+        if (!controls[tabName].length) {
           continue;
         }
         for (let section of controls[tabName]) {
-          if(!section.controls.length){
+          if (!section.controls.length) {
             continue;
           }
-          for (let control of section.controls){
-            if(control.default !== undefined
-                && this.settings[control.controlId] === undefined){
+          for (let control of section.controls) {
+            if (
+              control.default !== undefined &&
+              this.settings[control.controlId] === undefined
+            ) {
               this.settings[control.controlId] = control.default;
             }
           }
@@ -249,45 +264,46 @@ class BaseElement {
     this.updateStyles();
   }
 
-  setSettingValue(settingName, value){
+  setSettingValue(settingName, value) {
     // console.log(settingName);
     this.settings[settingName] = value;
     this.component.changeSetting(settingName, value);
   }
 
-  _registerControls(){
+  _registerControls() {
     this.controllersRegistered = true;
   }
-   /**
-    * @param {string} sectionId
-    * @param {object} args
-    * */
-  startControlSection(sectionId, args){
-     if(this.controlsIds.indexOf(sectionId) !== -1){
-       throw 'Control with id' + sectionId + ' Already Exists in ' + this.getName();
-     }
-     let defaults = {
-       tab: TAB_CONTENT,
-     };
-     this.currentSection = {...defaults, ...args, sectionId};
-     this.controlsIds.push(sectionId);
-   }
-
-  endControlSection(){
-    this.currentSection = null;
+  /**
+   * @param {string} sectionId
+   * @param {object} args
+   * */
+  startControlSection(sectionId, args) {
+    if (this.controlsIds.indexOf(sectionId) !== -1) {
+      throw "Control with id" + sectionId + " Already Exists in " + this.getName();
+    }
+    let defaults = {
+      tab: TAB_CONTENT,
+    };
+    this.currentSection = { ...defaults, ...args, sectionId };
+    this.controlsIds.push(sectionId);
   }
 
+  endControlSection() {
+    this.currentSection = null;
+  }
 
   /**
    * @param {string} controlId
    * @param {object} args
    * */
-  addControl(controlId, args){
-    if(!this.currentSection){
-      throw 'Controls Can only be Added Inside the Section!'
+  addControl(controlId, args) {
+    if (!this.currentSection) {
+      throw "Controls Can only be Added Inside the Section!";
     }
-    if(this.controlsIds.indexOf(controlId) !== -1){
-      throw 'Control with id \'' + controlId + '\' Already Exists in ' + this.getName();
+    if (this.controlsIds.indexOf(controlId) !== -1) {
+      throw (
+        "Control with id '" + controlId + "' Already Exists in " + this.getName()
+      );
     }
 
     let section = this._getCurrentSection();
@@ -296,28 +312,31 @@ class BaseElement {
       type: CONTROLLER_TEXT,
     };
 
-    section.controls.push({...defaults, ...args, controlId});
-    window.controllersManager.setControlsCache(this.getName() + controlId, {...args, controlId});
+    section.controls.push({ ...defaults, ...args, controlId });
+    window.controllersManager.setControlsCache(this.getName() + controlId, {
+      ...args,
+      controlId,
+    });
     this.controlsIds.push(controlId);
   }
 
-  _getCurrentTab(){
+  _getCurrentTab() {
     let tabName = this.currentSection.tab || TAB_STYLE;
     let tab = this.controls[tabName];
-    if(! tab){
+    if (!tab) {
       tab = this.controls[tabName] = [];
     }
     return tab;
   }
-  _getCurrentSection(){
+  _getCurrentSection() {
     let tab = this._getCurrentTab();
     let sectionId = this.currentSection.sectionId;
-    for(let _section of tab){
-      if(this.currentSection.sectionId=== _section.sectionId){
-         return _section
+    for (let _section of tab) {
+      if (this.currentSection.sectionId === _section.sectionId) {
+        return _section;
       }
     }
-    let section ;
+    let section;
     section = {
       ...this.currentSection,
       controls: [],
@@ -327,27 +346,27 @@ class BaseElement {
     return section;
   }
 
-  getControls(){
+  getControls() {
     this._registerControls();
     return this.controls;
   }
 
-  setElementAsCurrent(){
+  setElementAsCurrent() {
     window.altrpEditor.modules.templateDataStorage.setCurrentElement(this);
   }
 
-  isEditor(){
+  isEditor() {
     return isEditor();
   }
-  getIds(){
+  getIds() {
     let ids = [this.getId()];
-    this.children.map(item => {
-      ids.push(item.getIds())
+    this.children.map((item) => {
+      ids.push(item.getIds());
     });
     return ids;
   }
 
-  getSelector(){
+  getSelector() {
     return `.altrp-element${this.getId()}`;
   }
   /**
@@ -355,21 +374,22 @@ class BaseElement {
    * @param {CSSRule[]} rules
    * @param {string} breakpoint
    * */
-  addStyles(settingName, rules, breakpoint = CONSTANTS.DEFAULT_BREAKPOINT){
+  addStyles(settingName, rules, breakpoint = CONSTANTS.DEFAULT_BREAKPOINT) {
     this.settings.styles = this.settings.styles || {};
     this.settings.styles[breakpoint] = this.settings.styles[breakpoint] || {};
 
-    this.settings.styles[breakpoint][settingName] = this.settings.styles[breakpoint][settingName] || {};
-    rules.forEach(rule => {
+    this.settings.styles[breakpoint][settingName] =
+      this.settings.styles[breakpoint][settingName] || {};
+    rules.forEach((rule) => {
       let finalSelector = rule.selector;
-      finalSelector = finalSelector.replace('{{ELEMENT}}', this.getSelector());
+      finalSelector = finalSelector.replace("{{ELEMENT}}", this.getSelector());
       this.settings.styles[breakpoint][settingName][finalSelector] = rule.properties;
     });
     this.updateStyles();
   }
 
-  updateStyles(){
-    window.stylesModulePromise.then(stylesModule => {
+  updateStyles() {
+    window.stylesModulePromise.then((stylesModule) => {
       /**
        * @member {Styles} stylesModule
        * */
@@ -377,30 +397,36 @@ class BaseElement {
     });
   }
 
-  getStringifyStyles(){
-    let styles = '';
-    if(typeof this.settings.styles !== 'object'){
-      return styles
+  getStringifyStyles() {
+    let styles = "";
+    if (typeof this.settings.styles !== "object") {
+      return styles;
     }
-    for(let breakpoint in this.settings.styles){
+    for (let breakpoint in this.settings.styles) {
       let rules = {};
-      if(this.settings.styles.hasOwnProperty(breakpoint)){
-        for(let settingName in this.settings.styles[breakpoint]){
-          if(this.settings.styles[breakpoint].hasOwnProperty(settingName)) {
-            for(let selector in this.settings.styles[breakpoint][settingName]){
-              if(this.settings.styles[breakpoint][settingName].hasOwnProperty(selector)) {
+      if (this.settings.styles.hasOwnProperty(breakpoint)) {
+        for (let settingName in this.settings.styles[breakpoint]) {
+          if (this.settings.styles[breakpoint].hasOwnProperty(settingName)) {
+            for (let selector in this.settings.styles[breakpoint][settingName]) {
+              if (
+                this.settings.styles[breakpoint][settingName].hasOwnProperty(
+                  selector
+                )
+              ) {
                 rules[selector] = rules[selector] || [];
                 // console.log(this.settings.styles[breakpoint][settingName][selector]);
-                rules[selector] = rules[selector].concat(this.settings.styles[breakpoint][settingName][selector])
+                rules[selector] = rules[selector].concat(
+                  this.settings.styles[breakpoint][settingName][selector]
+                );
               }
             }
           }
         }
       }
-      if(breakpoint === CONSTANTS.DEFAULT_BREAKPOINT){
-        for(let selector in rules){
-          if(rules.hasOwnProperty(selector)){
-            styles += `${selector} {` + rules[selector].join('') + '}';
+      if (breakpoint === CONSTANTS.DEFAULT_BREAKPOINT) {
+        for (let selector in rules) {
+          if (rules.hasOwnProperty(selector)) {
+            styles += `${selector} {` + rules[selector].join("") + "}";
           }
         }
       }
@@ -410,12 +436,12 @@ class BaseElement {
   /**
    * @param {BaseElement} parent
    * */
-  setParent(parent){
-    if(this.parent instanceof BaseElement){
+  setParent(parent) {
+    if (this.parent instanceof BaseElement) {
       this.parent.deleteChild(this);
     }
     this.parent = parent;
   }
 }
 
-export default BaseElement
+export default BaseElement;

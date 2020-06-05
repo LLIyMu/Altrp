@@ -1,10 +1,10 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import DynamicIcon from '../../../svgs/dynamic.svg'
-import AddIcon from '../../../svgs/add.svg'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import DynamicIcon from "../../../svgs/dynamic.svg";
+import AddIcon from "../../../svgs/add.svg";
 import controllerDecorate from "../../decorators/controller";
-import {assetsShow} from "../../store/assets-browser/actions";
-import {iconsManager} from "../../helpers";
+import { assetsShow } from "../../store/assets-browser/actions";
+import { iconsManager } from "../../helpers";
 
 class MediaController extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class MediaController extends Component {
       value = iconsManager().getIcon(this.props.default.name);
     }
     value = value || {};
-    this.state = {value};
+    this.state = { value };
     this.openAssetsBrowser = this.openAssetsBrowser.bind(this);
     this.deleteAsset = this.deleteAsset.bind(this);
     controllerDecorate(this);
@@ -44,9 +44,9 @@ class MediaController extends Component {
   }
 
   render() {
-    let Asset = '';
-    let assetClasses = 'icon';
-    let viewBox = '0 0 20 20';
+    let Asset = "";
+    let assetClasses = "icon";
+    let viewBox = "0 0 20 20";
     let assetsProps = {
       width: 227,
       height: 90,
@@ -55,34 +55,41 @@ class MediaController extends Component {
       assetsProps.className = `asset asset_${this.state.value.assetType}`;
 
       switch (this.state.value.assetType) {
-        case 'icon': {
-          Asset = iconsManager().getIconComponent(this.state.value.name);
-        }
+        case "icon":
+          {
+            Asset = iconsManager().getIconComponent(this.state.value.name);
+          }
           break;
-        case 'media': {
-          Asset = 'img';
-          assetsProps.src = this.state.value.url;
-        }
+        case "media":
+          {
+            Asset = "img";
+            assetsProps.src = this.state.value.url;
+          }
           break;
       }
     } else {
-      Asset = AddIcon
+      Asset = AddIcon;
     }
-    return <div className="controller-container controller-container_media">
-      <div className="controller-container__label">
-        {this.props.label}
+    return (
+      <div className="controller-container controller-container_media">
+        <div className="controller-container__label">{this.props.label}</div>
+        <div className="controller-media-choose" onClick={this.openAssetsBrowser}>
+          {Asset ? <Asset {...assetsProps} /> : ""}
+          {this.state.value.name ? (
+            <button
+              className="controller-media-choose__button controller-media-choose__button_delete"
+              onClick={this.deleteAsset}
+            >
+              Delete
+            </button>
+          ) : (
+            <button className="controller-media-choose__button controller-media-choose__button_choose">
+              Choose Media
+            </button>
+          )}
+        </div>
       </div>
-      <div className="controller-media-choose" onClick={this.openAssetsBrowser}>
-        {Asset ? <Asset {...assetsProps}/> : ''}
-        {
-          this.state.value.name ?
-              <button className="controller-media-choose__button controller-media-choose__button_delete"
-                      onClick={this.deleteAsset}>Delete</button> :
-              <button className="controller-media-choose__button controller-media-choose__button_choose">Choose
-                Media</button>
-        }
-      </div>
-    </div>
+    );
   }
 }
 

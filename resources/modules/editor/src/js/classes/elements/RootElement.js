@@ -1,7 +1,7 @@
 import BaseElement from "./BaseElement";
 import {
   CONTROLLER_DIMENSIONS,
-  CONTROLLER_NUMBER, 
+  CONTROLLER_NUMBER,
   CONTROLLER_SWITCHER,
   CONTROLLER_TEXT,
   CONTROLLER_TEXTAREA,
@@ -28,29 +28,29 @@ class RootElement extends BaseElement {
   }
 
   static getName() {
-    return 'root-element';
+    return "root-element";
   }
 
   static getTitle() {
-    return 'Page';
+    return "Page";
   }
 
   static getType() {
-    return 'root-element';
+    return "root-element";
   }
 
   _registerControls() {
     if (this.controllersRegistered) {
-      return
+      return;
     }
-    this.startControlSection('text_section', {
+    this.startControlSection("text_section", {
       tab: TAB_CONTENT,
-      label: 'Text Section',
+      label: "Text Section",
     });
 
-    this.addControl('textContainer', {
+    this.addControl("textContainer", {
       type: CONTROLLER_MEDIA,
-      label: "textContainer"  
+      label: "textContainer",
     });
 
     // this.addControl('text', {
@@ -95,7 +95,7 @@ class RootElement extends BaseElement {
     //     'vh',
     //   ],
     //   rules: {
-    //     '{{ELEMENT}}': [ 
+    //     '{{ELEMENT}}': [
     //       'padding-top: {{TOP}}{{UNIT}};',
     //       'padding-right: {{RIGHT}}{{UNIT}};',
     //       'padding-bottom: {{BOTTOM}}{{UNIT}};',
@@ -120,7 +120,7 @@ class RootElement extends BaseElement {
     //     'vh',
     //   ],
     //   rules: {
-    //     '{{ELEMENT}}': [ 
+    //     '{{ELEMENT}}': [
     //       'padding-top: {{TOP}}{{UNIT}};',
     //       'padding-right: {{RIGHT}}{{UNIT}};',
     //       'padding-bottom: {{BOTTOM}}{{UNIT}};',
@@ -205,7 +205,7 @@ class RootElement extends BaseElement {
     //     {
     //       value: '1',
     //       label:'Select sd  Content 1'
-    //     }, 
+    //     },
     //     {
     //       value: '2',
     //       label:'Select Content 2'
@@ -238,16 +238,16 @@ class RootElement extends BaseElement {
     //     '{{ELEMENT}}': 'background: {{COLOR}};',
     //   },
     // });
-//     this.addControl('button', {
-//       type: CONTROLLER_BUTTON,
-//       label: 'button content',
-//       button: 'button',
-//       classes: {
-//         backgroundColor: '#20c74c',
-//         color: '#FFF'
-//       }
-//     });
-//
+    //     this.addControl('button', {
+    //       type: CONTROLLER_BUTTON,
+    //       label: 'button content',
+    //       button: 'button',
+    //       classes: {
+    //         backgroundColor: '#20c74c',
+    //         color: '#FFF'
+    //       }
+    //     });
+    //
     // this.addControl('buttonContrainer', {
     //   type: CONTROLLER_BUTTON,
     //   default: {
@@ -277,7 +277,7 @@ class RootElement extends BaseElement {
     //         fontFamily: 'Montserrat',
     //         lineHeight: '15px',
     //         fontWeight: 'bold'
-    //       },     
+    //       },
     //     },
     //     {
     //       value: 'Hover',
@@ -360,7 +360,7 @@ class RootElement extends BaseElement {
     //     label: 'heading'
     //   }
     // });
-    
+
     // this.addControl('css editor', {
     //   type: CONTROLLER_CSSEDITOR,
     //   default: {
@@ -368,7 +368,7 @@ class RootElement extends BaseElement {
     //   },
     // });
 
-//     this.endControlSection();
+    //     this.endControlSection();
     // this.addControl('shadow', {
     //     type: CONTROLLER_SHADOW,
     //     label: 'box shadow',
@@ -505,16 +505,15 @@ class RootElement extends BaseElement {
     // });
     //
     // this.endControlSection();
-
   }
 
   appendNewSection(newSection) {
-    if (newSection.getType() !== 'section') {
-      throw 'Only Section can be a Child of Template';
+    if (newSection.getType() !== "section") {
+      throw "Only Section can be a Child of Template";
     }
     this.appendChild(newSection);
   }
-  getSelector(){
+  getSelector() {
     return `.altrp-template-root${this.getId()}`;
   }
 }

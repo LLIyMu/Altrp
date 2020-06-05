@@ -1,24 +1,30 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 class ColumnComponent extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       children: props.children || [],
-      settings: props.element.getSettings()
+      settings: props.element.getSettings(),
     };
     props.element.component = this;
-    if(window.elementDecorator){
+    if (window.elementDecorator) {
       window.elementDecorator(this);
     }
   }
-  render(){
-    return <div className="altrp-column">
-      {this.state.children.map(
-          section => <ElementWrapper key={section.getId()} component={section.componentClass} element={section}/>
-      )}
-    </div>
+  render() {
+    return (
+      <div className="altrp-column">
+        {this.state.children.map((section) => (
+          <ElementWrapper
+            key={section.getId()}
+            component={section.componentClass}
+            element={section}
+          />
+        ))}
+      </div>
+    );
   }
 }
 
-export default ColumnComponent
+export default ColumnComponent;

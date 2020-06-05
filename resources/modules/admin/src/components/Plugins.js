@@ -1,9 +1,7 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-
-export default class Plugins extends Component{
-  render(){
+export default class Plugins extends Component {
+  render() {
     return <div>Plugins</div>;
   }
-
 }

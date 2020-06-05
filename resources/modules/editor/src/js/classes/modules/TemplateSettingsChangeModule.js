@@ -1,4 +1,2 @@
-class TemplateSettingsChangeModule {
-
-}
+class TemplateSettingsChangeModule {}
 export default TemplateSettingsChangeModule;

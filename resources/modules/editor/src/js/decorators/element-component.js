@@ -1,23 +1,21 @@
-
 export function changeSetting(settingName, value) {
   let newState = this.state;
   newState.settings[settingName] = value;
   this.setState({
-    ...newState
-  })
+    ...newState,
+  });
 }
 
 export function setChildren(children) {
   this.setState({
-      ...this.state,
-    children
+    ...this.state,
+    children,
   });
-  if(this.props.wrapper && this.props.wrapper.setState){
-    this.props.wrapper.setState(()=> ({
+  if (this.props.wrapper && this.props.wrapper.setState) {
+    this.props.wrapper.setState(() => ({
       ...this.state,
-      children
-      })
-    );
+      children,
+    }));
   }
 }
 

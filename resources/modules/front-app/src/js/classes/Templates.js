@@ -1,10 +1,7 @@
 class Templates {
-  constructor(){
-  }
-  getTemplate(templateId){
-
-  }
+  constructor() {}
+  getTemplate(templateId) {}
 }
 
-Templates.instance  = new Templates();
-export default Templates.instance
+Templates.instance = new Templates();
+export default Templates.instance;

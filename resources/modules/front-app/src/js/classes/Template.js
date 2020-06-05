@@ -2,8 +2,6 @@
  * @property {Int} id
  * @property {Object} data
  * */
-class Template {
+class Template {}
 
-}
-
-export default Template
+export default Template;

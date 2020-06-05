@@ -1,21 +1,24 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 class TextWidget extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      settings: props.element.getSettings()
+      settings: props.element.getSettings(),
     };
     props.element.component = this;
-    if(window.elementDecorator){
+    if (window.elementDecorator) {
       window.elementDecorator(this);
     }
   }
 
-  render(){
-    return React.createElement(this.state.settings.text_settings_html_tag, {className: "altrp-text"}, this.state.settings.text);
-    
+  render() {
+    return React.createElement(
+      this.state.settings.text_settings_html_tag,
+      { className: "altrp-text" },
+      this.state.settings.text
+    );
   }
 }
 
-export default TextWidget
+export default TextWidget;
