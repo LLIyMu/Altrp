@@ -12,7 +12,7 @@ class Pagination extends Component {
     }
   }
   setCurrentPage(num) {
-    if(num <= 1) {
+    if(num < 1) {
       this.setState({currentPage: 1});
       this.changePage(this.state.currentPage);
       return;
